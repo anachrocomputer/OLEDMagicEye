@@ -92,7 +92,7 @@ void setup(void)
 void loop(void)
 {
   long int start, now;
-  int eyeval1, eyeval2;
+  int eyeval1, eyeval2, eyeval3;
   int eyeangle_l, eyeangle_r;
   int eyepos;
   int eyewidth;
@@ -102,16 +102,15 @@ void loop(void)
     // Record timer in milliseconds at start of frame cycle
     start = millis();
     
-    // Get analogue input (0..1023)
-    eyeval1 = analogRead(0);
-    eyeval2 = analogRead(1);
+    // Get analogue inputs (0..1023)
+    eyeval1 = analogRead(0);  // Rotary pot
+    eyeval2 = analogRead(1);  // Joystick X
+    eyeval3 = analogRead(2);  // Joystick Y
     
     eyeangle_l = map(eyeval1, 0, 1023, 15, 165);
     eyeangle_r = map(eyeval1, 0, 1023, 15, 165);
-    
-    //eyepos = map(eyeval, 0, 1023, 32, 96);
-    eyepos = CENX;
-    eyewidth = map(eyeval2, 0, 1023, 6, 60);
+    eyepos     = map(eyeval3, 0, 1023, 32, 96);
+    eyewidth   = map(eyeval2, 0, 1023, 6, 60);
     
     // Draw empty background
     drawBackground();
@@ -121,6 +120,7 @@ void loop(void)
     updscreen();
     
     // Work out timing for this frame
+    // 'elapsed' varies between about 11ms and about 35ms according to width and eye opening
     now = millis();
     elapsed = now - start;
     
